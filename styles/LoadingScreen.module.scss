@@ -1,0 +1,17 @@
+#bar {
+    width: 500px;
+}
+
+#barInner {
+    width: 100px;
+}
+
+.bar_container {
+    width: 50%;
+    height: 20px;
+    animation: backandforth ease-in-out 2s infinite;
+    background: rgb(59 130 246);
+    border-radius: 20px
+}
+
+@keyframes backandforth {0%{margin-left:0;} 50%{margin-left:50%;} 100%{margin-left:0;}}

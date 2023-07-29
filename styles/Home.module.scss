@@ -1,0 +1,71 @@
+// Cubes animation
+.hero {
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cube {
+  position: absolute;
+  top: 60vh;
+  left: 45vw;
+  width: 10px;
+  height: 10px;
+  border: solid 1px darken(#0040C1, 8%);
+  transform-origin: top left;
+  transform: scale(0) rotate(0deg) translate(-50%, -50%);
+  animation: cube 12s ease-in forwards infinite;
+  z-index: -999;
+  
+  &:nth-child(2n) {
+    border-color: lighten(#0040C1, 10%);
+  }
+  
+  &:nth-child(2) {
+    animation-delay: 0s;
+    left: 10vw;
+    top: 20vh;
+  }
+  
+  &:nth-child(3) {
+    animation-delay: 2s;
+    left: 90vw;
+    top: 60vh;
+  }
+  
+  &:nth-child(4) {
+    animation-delay: 4s;
+    left: 90vw;
+    top: 10vh;
+  }
+  
+  &:nth-child(5) {
+    animation-delay: 6s;
+    left: 10vw;
+    top: 50vh;
+  }
+  
+  &:nth-child(6) {
+    animation-delay: 8s;
+    left: 50vw;
+    top: 10vh;
+  }
+}
+
+@keyframes cube {
+  from {
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);   
+    opacity: 1;
+    z-index: -999;
+  }
+  to {
+    transform: scale(20) rotate(960deg) translate(-50%, -50%); 
+    opacity: 0;
+    z-index: -999;
+  }
+}

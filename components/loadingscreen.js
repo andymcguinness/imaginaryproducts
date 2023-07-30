@@ -13,7 +13,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 // Styles
 import styles from '../styles/LoadingScreen.module.scss';
 
-export default function LoadingScreen() {
+export default function LoadingScreen({ percentage }) {
 
   const [funny, setFunny] = useState('Loading data...')
 
@@ -37,11 +37,10 @@ export default function LoadingScreen() {
         <main className="items-center mt-20 mb-20 rounded overflow-hidden shadow-lg bg-white px-20 py-20 z-10 w-full md:w-1/2">
           <p className="mb-6 mt-4 text-lg font-normal text-gray-500 lg:text-xl text-center relative z-10">{funny}</p>
           <ProgressBar 
-            completed={60}
+            completed={percentage}
             bgColor="rgb(59 130 246)"
-            isLabelVisible={false}
+            isLabelVisible={true}
             animateOnRender={true}
-            completedClassName={styles.bar_container}
           />
         </main>
       </motion.div>

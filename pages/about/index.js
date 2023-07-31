@@ -51,7 +51,7 @@ export default function About() {
                     This project is an exercise in absurdity by <a href="https://andymcguinness.com" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Andy McGuinness</a>. Take with a large grain of salt.
                     <br />
                     <br />
-                    <a href="" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Code.</a>
+                    <a href="https://github.com/andymcguinness/imaginaryproducts" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Code.</a>
                   </p>
                 </div>
               </div>
@@ -63,7 +63,7 @@ export default function About() {
                 <div className="px-6 py-4">
                   <h3 className="font-bold text-xl mb-2">Stack</h3>
                   <p className="text-gray-700 text-base">
-                    This project is built on <a href="https://nextjs.org/" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Next.js</a> using the ever-awesome <a href="https://www.framer.com/motion/" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Framer Motion</a> and <a className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Tailwind CSS</a>. It also makes heavy use of <a href="https://openai.com/blog/openai-api" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">OpenAI's API</a>.
+                    This project is built on <a href="https://nextjs.org/" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Next.js</a> using the ever-awesome <a href="https://www.framer.com/motion/" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Framer Motion</a> and <a href="https://tailwindcss.com/" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">Tailwind CSS</a>. It also makes heavy use of <a href="https://openai.com/blog/openai-api" target="_blank" className="font-semibold text-gray-700 hover:underline decoration-blue-500 decoration-2">OpenAI's API</a>.
                   </p>
                 </div>
               </div>

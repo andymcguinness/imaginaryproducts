@@ -7,6 +7,9 @@ import Image from 'next/image';
 // Framer-motion
 import { motion } from "framer-motion";
 
+// Blur Image component
+import BlurImage from '../components/blurimage'
+
 export default function Results({goHome, name, description, image}) {
   // Props:
   //  - goHome: the function from the main index.js file that controls the "Try Again" buttons' behavior
@@ -14,7 +17,6 @@ export default function Results({goHome, name, description, image}) {
   //  - description:  the fake product's description
   //  - image:  the fake product's image URL
 
-  // No extra finagling needed, just return the styled content
   return (
     <React.Fragment key={3}>
       <motion.div
@@ -24,20 +26,20 @@ export default function Results({goHome, name, description, image}) {
           className="flex flex-col items-center relative z-10"
           key="results"
       >
-        <main className='md:grid md:grid-flow-row md:grid-col-1 lg:grid-cols-2 items-center md:mt-20 md:mb-40 rounded overflow-hidden shadow-lg bg-white z-10 md:w-2/3 align-center justify-center relative'>
+        <main className='grid grid-flow-row grid-col-1 lg:grid-cols-2 items-center md:mt-20 md:mb-40 rounded overflow-hidden shadow-lg bg-white z-10 md:w-2/3 align-center justify-center relative'>
           
           {
             // The product image -- left side on big screens, top on small screens
           }
-          <div className="w-auto flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-            <Image
+          <div className="w-full h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+            <BlurImage
               src={image}
               className="w-full h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
               width="1024"
               height="1024"
               alt={name}
-              placeholder='blur'
-              blurDataURL='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkSAMAAGwAaKJgE8oAAAAASUVORK5CYII='
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkmAkAAJ8AmzsOXcYAAAAASUVORK5CYII="
             />
           </div>
 

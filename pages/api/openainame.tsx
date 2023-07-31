@@ -19,7 +19,7 @@ const handler = async (req: NextRequest) => {
     // Try getting a name
     const item_name = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: "Generate the name of an imaginary product.",
+      prompt: "Generate the name of an absurd imaginary product.",
       max_tokens: 50,
       stream: false,
     });

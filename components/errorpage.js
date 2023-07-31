@@ -27,7 +27,6 @@ export default function ErrorPage({returnHome, problem}) {
         setErrorMsg(problem.props);
       }
     } else {
-      console.log(problem);
       setErrorMsg(problem.toString());
     }
 
@@ -78,7 +77,7 @@ export default function ErrorPage({returnHome, problem}) {
             // The error message
           }
           <pre className="flex flex-col items-center rounded text-wrap">
-            <code className="javascript">
+            <code>
               {errorMsg}
             </code>
           </pre>

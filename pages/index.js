@@ -1,18 +1,20 @@
 // React
 import React, { useState, useEffect } from 'react';
 
+// Next.js
+import Error from 'next/error';
+
 // Framer-motion
 import { AnimatePresence } from 'framer-motion'
 
 // Page components
-import App from './_app';
+import App from './_app'; // required for global styling
 import Navbar from '../components/navbar';
 import Home from '../components/home'; // step 1
 import LoadingScreen from '../components/loadingscreen'; // step 2
 import Results from '../components/results'; // step 3
 import ErrorPage from '../components/errorpage' // step 4
 import Footer from '../components/footer';
-import Error from 'next/error';
 
 export default function OnePage() {
 
@@ -30,18 +32,48 @@ export default function OnePage() {
     Step 4 = Error
   */
 
+  // My lovely fetch wrapper to check for 400 errors from the server
+  function fetchData() {
+
+    // Applying args to fetch -- no {this} needs applied
+    return fetch.apply(null, arguments).then(response => {
+      if (!response.ok) {
+
+        // Get the basics of the error
+        let err = new Error("HTTP status code: " + response.status);
+
+        // Set the error response
+        err.response = response;
+
+        // Set the error status
+        err.status = response.status;
+
+        // Throw it like you mean it!
+        throw err;
+      }
+      // Yay! Nothing bad happened!
+      return response;
+    });
+  }
+
   // change state based on click
   async function handleClick() {
 
     // to start with -- move to the loading screen
-    setStep((p) => (2));
+    setStep(2);
 
     try {
+
       // Step 1 -- get the product name
-      const item_name = await fetch('/api/openainame').then((res1) => {
+      const item_name = await fetchData(process.env.NEXT_PUBLIC_NAME_API_URL).then((response, error) => {
+
+        // Catching any API errors
+        if (error) {
+          throw new Error(error);
+        }
 
         // Set the text value
-        let name = res1.text().then((text, error) => {
+        let name = response.text().then((text, error) => {
 
           // Catching any errors
           if (text.error) {
@@ -61,8 +93,10 @@ export default function OnePage() {
         }).catch((error) => {
 
           // How'd you get here?! No wait, go back!
-          setProblem(error);
-          setStep(4);
+          if (!problem) {
+            setProblem(error);
+            setStep(4);
+          }
         });
 
         // State isn't speedy enough for us. We're moving at the speed of A S Y N C
@@ -70,15 +104,22 @@ export default function OnePage() {
       }).catch((error) => {
 
         // It's me, hi, I'm the problem, it's me
-        setProblem(error);
-        setStep(4);
+        if (!problem) {
+          setProblem(error);
+          setStep(4);
+        }
       });
 
       // Step 2 -- get the funny description
-      const item_description = fetch('api/openaitext', { method: 'POST', body: JSON.stringify({ item_name })}).then((res2) => {
+      const item_description = fetchData(process.env.NEXT_PUBLIC_TEXT_API_URL, { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
+
+        // Catching any API errors
+        if (error) {
+          throw new Error(error);
+        }
 
         // Set the text value
-        let description = res2.text().then((text, error) => {
+        let description = response.text().then((text, error) => {
 
           // Catching any errors
           if (text.error || error) {
@@ -97,22 +138,31 @@ export default function OnePage() {
         }).catch((error) => {
 
           // The cyber police have been called
-          setProblem(error);
-          setStep(4);
+          if (!problem) {
+            setProblem(error);
+            setStep(4);
+          }
         });
         
       }).catch((error) => {
 
         // The consequences will never be the same
-        setProblem(error);
-        setStep(4);
+        if (!problem) {
+          setProblem(error);
+          setStep(4);
+        }
       });
 
       // Step 3 -- get the image
-      const item_image =  fetch('api/openaiimage',  { method: 'POST', body: JSON.stringify({ item_name })}).then((res3) => {
+      const item_image = fetchData(process.env.NEXT_PUBLIC_IMAGE_API_URL, { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
 
-        // Set the image URL
-        let image = res3.json().then((json, error) => {
+        // Catching any API errors
+        if (error) {
+          throw new Error(error);
+        }
+
+        // Set theimage URL
+        let image = response.json().then((json, error) => {
 
           // Catching any errors
           if (json.error) {
@@ -130,27 +180,35 @@ export default function OnePage() {
         }).catch((error) => {
 
           // I can't believe you've done this
-          setProblem(error);
-          setStep(4);
+          if (!problem) {
+            setProblem(error);
+            setStep(4);
+          }
         });
       }).catch((error) => {
 
         // Well, gosh darn...
-        setProblem(error);
-        setStep(4);
+        if (!problem) {
+          setProblem(error);
+          setStep(4);
+        }
       });
 
       await Promise.all([item_description, item_image]).catch((error) => {
         
         // I'm out of witty sayings, sorry, this is some error handling for the Promise object
-        setProblem(error);
-        setStep(4);
+        if (!problem) {
+          setProblem(error);
+          setStep(4);
+        }
       });
     } catch (error) {
       
       // Houston, we have a problem...
-      setProblem(error);
-      setStep(4);
+      if (!problem) {
+        setProblem(error);
+        setStep(4);
+      }
     }
   }
 
@@ -179,11 +237,13 @@ export default function OnePage() {
   useEffect(() => {
 
     // Checking if everything is set properly
-    // Why here, Andy? You may ask.
+    // "Why here, Andy?"" You may ask.
     // Well... the problem is, the Promises resolve
     // before the state change is completed. If I hook
     // onto the Promise.all() function (which I tried)
     // it will throw up because itemImage is undefined still.
+    // The problem check is to make sure we don't move along
+    // if we're actually in an error state.
     if (itemName && itemDescription && itemImage && !problem) {
       setStep(3);
     }

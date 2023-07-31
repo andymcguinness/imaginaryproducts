@@ -19,7 +19,7 @@ export default function getRandomMessage() {
     "Embiggening prototypes...",
     "Compiling code...",
     "Making sure all the i's have dots...",
-    "Convincing AI not to turn evil..",
+    "Convincing AI not to turn evil...",
     "Constructing additional pylons...",
     "Turning it off and back on again...",
     "Drying the paint...",

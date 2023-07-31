@@ -1,11 +1,8 @@
 // React
-import React, { useState } from 'react';
-
-// Next.js
-import Head from 'next/head';
+import React, { useState, useEffect } from 'react';
 
 // Framer-motion
-import { AnimatePresence, useAnimationControls } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 // Page components
 import App from './_app';
@@ -13,17 +10,19 @@ import Navbar from '../components/navbar';
 import Home from '../components/home'; // step 1
 import LoadingScreen from '../components/loadingscreen'; // step 2
 import Results from '../components/results'; // step 3
+import ErrorPage from '../components/errorpage' // step 4
 import Footer from '../components/footer';
+import Error from 'next/error';
 
 export default function OnePage() {
 
-  const controls = useAnimationControls();
-  const [step, setStep] = useState(1);
-  const [data, setData] = useState(null);
-  const [itemText, setItemText] = useState(null);
-  const [itemDescription, setItemDescription] = useState(null);
-  const [itemImage, setItemImage] = useState(null);
-  const [percentage, setPercentage] = useState(0);
+  const [step, setStep] = useState(1);              // used to control what's displaying
+  const [problem, setProblem] = useState(null);     // used for error management
+  const [percentage, setPercentage] = useState(0);  // used for the loading bar
+  const [itemName, setItemName] = useState(null);   // used to control the product name
+  const [itemDescription, setItemDescription] = useState(null); // used to control the item description
+  const [itemImage, setItemImage] = useState(null); // used to control the item image URL
+  
   /*
     Step 1 = Initial page
     Step 2 = Loading screen
@@ -33,59 +32,162 @@ export default function OnePage() {
 
   // change state based on click
   async function handleClick() {
-    setStep(2);
-    const result = await fetch('/api/openainame').then((res) => {
-        setPercentage(33);
-        let text = res.text().then((text) => {
-          let new_text = text.trim().replace("\n", "").replace("\"", "").replace("\\", "").trimEnd().substring(0, text.length - 2);
-          console.log(new_text);
-          setItemText(new_text);
-          return new_text;
-        }).then((new_text) => {
-          console.log(new_text);
 
-          const item_description = fetch('api/openaitext', { method: 'POST', body: JSON.stringify({ new_text })}).then((res) => {
-            setPercentage(66);
-            let description = res.text().then((text) => {
-              let cleansed_description = String(text).replace("\n", "").replace("\"", "");
-              setItemDescription(cleansed_description);
-              return new_text;
-            }).then((new_text) => {
-              console.log(JSON.stringify({new_text}));
+    // to start with -- move to the loading screen
+    setStep((p) => (2));
 
-              const item_image = fetch('api/openaiimage',  { method: 'POST', body: JSON.stringify({ new_text })}).then((res) => {
-                setPercentage(100);
-                let image = res.json().then((json) => {
-                  let new_image = json.data[0].url;
-                  setItemImage(new_image);
-                  setStep(3);
-                });
-              }).catch((err) => console.error(err));
-            });
-          }).catch((err) => console.error(err));
-        })
-      }).catch((err) => console.error(err));
+    try {
+      // Step 1 -- get the product name
+      const item_name = await fetch('/api/openainame').then((res1) => {
+
+        // Set the text value
+        let name = res1.text().then((text, error) => {
+
+          // Catching any errors
+          if (text.error) {
+            throw new Error(text.error);
+          }
+
+          setPercentage(33);
+
+          // Un-junk the text
+          let cleansed_name = text.trim().replace("\n", "").replace("\"", "").replace("\\", "").trimEnd().substring(0, text.length - 2);
+          
+          // The state won't update fast enough -- return the text as well
+          setItemName(cleansed_name);
+
+          return cleansed_name;
+        }).catch((error) => {
+
+          // How'd you get here?! No wait, go back!
+          setProblem(error);
+          setStep(4);
+        });
+
+        // State isn't speedy enough for us. We're moving at the speed of A S Y N C
+        return name;
+      }).catch((error) => {
+
+        // It's me, hi, I'm the problem, it's me
+        setProblem(error);
+        setStep(4);
+      });
+
+      // Step 2 -- get the funny description
+      const item_description = fetch('api/openaitext', { method: 'POST', body: JSON.stringify({ item_name })}).then((res2) => {
+
+        // Set the text value
+        let description = res2.text().then((text, error) => {
+
+          // Catching any errors
+          if (text.error || error) {
+            let error_text = text.error ? text.error : error;
+            throw new Error(error_text);
+          }
+
+          // Move the loading bar along
+          setPercentage(66);
+
+          // Un-junk the text
+          let cleansed_description = String(text).replace("\n", "").replace("\"", "").trimEnd().substring(0, text.length - 2);
+
+          // Set that description
+          setItemDescription(cleansed_description);
+        }).catch((error) => {
+
+          // The cyber police have been called
+          setProblem(error);
+          setStep(4);
+        });
+        
+      }).catch((error) => {
+
+        // The consequences will never be the same
+        setProblem(error);
+        setStep(4);
+      });
+
+      const item_image =  fetch('api/openaiimage',  { method: 'POST', body: JSON.stringify({ item_name })}).then((res3) => {
+
+        // Set the image URL
+        let image = res3.json().then((json, error) => {
+
+          // Catching any errors
+          if (json.error) {
+            throw new Error(json.error);
+          }
+
+          // Move the loading bar along
+          setPercentage(100);
+
+          // No need to un-junk! Wow!
+          let new_image = json.data[0].url;
+
+          // Set the URL
+          setItemImage(new_image);
+        }).catch((error) => {
+
+          // I can't believe you've done this
+          setProblem(error);
+          setStep(4);
+        });
+      }).catch((error) => {
+
+        // Well, gosh darn...
+        setProblem(error);
+        setStep(4);
+      });
+
+      await Promise.all([item_description, item_image]).catch((error) => {
+        
+        // I'm out of witty sayings, sorry, this is some error handling for the Promise object
+        setProblem(error);
+        setStep(4);
+      });
+    } catch (error) {
+      
+      // Houston, we have a problem...
+      setProblem(error);
+      setStep(4);
     }
-  // resets the state from the home button
-  function goHome() {
-    setStep(1);
   }
 
-  return (
-    <>
-      <AnimatePresence mode="wait" initial={false}>
-        <Head>
-            <title>Imaginary Products for Imaginary People</title>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
+  // resets the state from the home button
+  function goHome() {
 
+    // Move us back to the first screen
+    setStep((p) => (1));
+
+    // Clear out any errors
+    setProblem((p) => (null));
+
+    // Reset the loading bar
+    setPercentage((p) => (0));
+  }
+
+  useEffect(() => {
+
+    // Checking if everything is set properly
+    // Why here, Andy? You may ask.
+    // Well... the problem is, the Promises resolve
+    // before the state change is completed. If I hook
+    // onto the Promise.all() function (which I tried)
+    // it will throw up because itemImage is undefined still.
+    if (itemName && itemDescription && itemImage) {
+      setStep(3);
+    }
+  }, [itemName, itemDescription, itemImage])
+
+  return (
+    <React.Fragment key={0}>
+      <AnimatePresence mode="wait" initial={false}>
         <div className="min-h-screen bg-gray-100 flex flex-col align-center">
-          <Navbar />
+          <Navbar homeHandler={goHome} />
 
           {
             // Show only for step 1
             step == 1 &&
-            <Home handler = {handleClick} />
+            <Home handler={handleClick} />
           }
 
           {
@@ -97,12 +199,18 @@ export default function OnePage() {
           {
             // Show only for step 3
             step == 3 &&
-            <Results name={itemText} description={itemDescription} image={itemImage} goHome={goHome} />
+            <Results name={itemName} description={itemDescription} image={itemImage} goHome={goHome} />
+          }
+
+          {
+            // Show for errors/step 4 :(
+            step == 4 &&
+            <ErrorPage problem={problem} returnHome={goHome}/>
           }
 
           <Footer />
         </div>
       </AnimatePresence>
-    </>
+    </React.Fragment>
   )
 }

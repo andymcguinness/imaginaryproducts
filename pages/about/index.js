@@ -5,24 +5,36 @@ import Head from 'next/head';
 import { AnimatePresence } from 'framer-motion'
 
 // Page components
-import App from '../_app';
+import App from '../_app'; // needed for global styles
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 
 export default function About() {
 
+  // No extra Javascript-ing needed
   return (
     <>
       <AnimatePresence mode="wait" initial={true}>
         <div>
+
+          {
+            // Setting the title of the page
+          }
           <Head>
             <title>Imaginary Products for Imaginary People | About</title>
             <link rel="icon" href="/favicon.ico" />
           </Head>
 
+          {
+            // The nav bar
+          }
           <Navbar />
 
-          <main className="flex flex-col relative mb-20">
+          <main className="flex flex-col relative md:mb-20">
+
+            {
+              // Header and subheader/description
+            }
             <header className="mb-6 mt-2">
               <h1 className="text-center mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-5xl">About/Caveats</h1>
               <p className="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">About this project and some caveats.</p>
@@ -32,7 +44,7 @@ export default function About() {
               {
                 // About card
               }
-              <div className="max-w-lg rounded overflow-hidden shadow-lg mr-4 mb-4 justify-self-center md:justify-self-end">
+              <div className="max-w-lg rounded overflow-hidden shadow-lg md:mr-4 mb-4 justify-self-center md:justify-self-end">
                 <div className="px-6 py-4">
                   <h3 className="font-bold text-xl mb-2">About</h3>
                   <p className="text-gray-700 text-base">
@@ -47,7 +59,7 @@ export default function About() {
               {
                 // Stack card
               }
-              <div className="max-w-lg rounded overflow-hidden shadow-lg mr-4 mb-4 justify-self-center md:justify-self-start">
+              <div className="max-w-lg rounded overflow-hidden shadow-lg md:mr-4 mb-4 justify-self-center md:justify-self-start">
                 <div className="px-6 py-4">
                   <h3 className="font-bold text-xl mb-2">Stack</h3>
                   <p className="text-gray-700 text-base">
@@ -59,7 +71,7 @@ export default function About() {
               {
                 // Credits card
               }
-              <div className="max-w-lg rounded overflow-hidden shadow-lg mr-4 mb-4 justify-self-center md:justify-self-end">
+              <div className="max-w-lg rounded overflow-hidden shadow-lg md:mr-4 mb-4 justify-self-center md:justify-self-end">
                 <div className="px-6 py-4">
                   <h3 className="font-bold text-xl mb-2">Credits</h3>
                   <p className="text-gray-700 text-base">
@@ -83,7 +95,7 @@ export default function About() {
               {
                 // Caveats card
               }
-              <div className="max-w-lg rounded overflow-hidden shadow-lg mr-4 mb-4 justify-self-center md:justify-self-start">
+              <div className="max-w-lg rounded overflow-hidden shadow-lg md:mr-4 mb-4 justify-self-center md:justify-self-start">
                 <div className="px-6 py-4">
                   <h3 className="font-bold text-xl mb-2">Caveats</h3>
                   <p className="text-gray-700 text-base">
@@ -106,10 +118,12 @@ export default function About() {
                   </p>
                 </div>
               </div>
-
             </div>
           </main>
 
+          {
+            // The footer
+          }
           <Footer />
           
         </div>

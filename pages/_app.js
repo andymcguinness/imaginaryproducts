@@ -4,6 +4,9 @@ import React from 'react'
 // Next.js
 import Head from 'next/head';
 
+// Vercel analytics
+import { Analytics } from '@vercel/analytics/react';
+
 // Fontawesome
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -25,6 +28,7 @@ export default function App({ Component, pageProps }) {
           <link rel="icon" href="/favicon.ico" />
       </Head>
       <Component {...pageProps} />
+      <Analytics />
     </>
   )
 }

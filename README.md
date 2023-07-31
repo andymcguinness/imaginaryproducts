@@ -43,6 +43,27 @@ OPENAI_API_KEY='{your key here}'
 OPENAI_IMAGE_PATHNAME='/private/{your org here}/**'
 ```
 
+You'll also need to set up your next.config.js file to look like this:
+
+```js
+module.exports = {
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'oaidalleapiprodscus.blob.core.windows.net',
+          port: '',
+          pathname: process.env.OPENAI_IMAGE_PATHNAME
+        },
+      ],
+    },
+  }
+```
+
+This is because by default, Next.js doesn't trust external images. We need to explicity tell it that it's totally okay to load images from OpenAI.
+
+(If you find your images are not being trusted, double-check the hostname. Yours could be different.)
+
 Then, to start the development server and have it watch for changes, run:
 
 ```js

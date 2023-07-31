@@ -48,6 +48,7 @@ export default function OnePage() {
             throw new Error(text.error);
           }
 
+          // Move the loading bar along
           setPercentage(33);
 
           // Un-junk the text
@@ -107,6 +108,7 @@ export default function OnePage() {
         setStep(4);
       });
 
+      // Step 3 -- get the image
       const item_image =  fetch('api/openaiimage',  { method: 'POST', body: JSON.stringify({ item_name })}).then((res3) => {
 
         // Set the image URL
@@ -163,6 +165,15 @@ export default function OnePage() {
 
     // Reset the loading bar
     setPercentage((p) => (0));
+
+    // Reset the item name
+    setItemName(null);
+
+    // Reest the item description
+    setItemDescription(null);
+    
+    // Reset the item image
+    setItemImage(null);
   }
 
   useEffect(() => {
@@ -173,7 +184,7 @@ export default function OnePage() {
     // before the state change is completed. If I hook
     // onto the Promise.all() function (which I tried)
     // it will throw up because itemImage is undefined still.
-    if (itemName && itemDescription && itemImage) {
+    if (itemName && itemDescription && itemImage && !problem) {
       setStep(3);
     }
   }, [itemName, itemDescription, itemImage])

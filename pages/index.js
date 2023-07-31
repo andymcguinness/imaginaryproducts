@@ -65,7 +65,7 @@ export default function OnePage() {
     try {
 
       // Step 1 -- get the product name
-      const item_name = await fetchData(process.env.NEXT_PUBLIC_NAME_API_URL).then((response, error) => {
+      const item_name = await fetchData('/api/openainame').then((response, error) => {
 
         // Catching any API errors
         if (error) {
@@ -111,7 +111,7 @@ export default function OnePage() {
       });
 
       // Step 2 -- get the funny description
-      const item_description = fetchData(process.env.NEXT_PUBLIC_TEXT_API_URL, { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
+      const item_description = fetchData('/api/openaitext', { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
 
         // Catching any API errors
         if (error) {
@@ -154,7 +154,7 @@ export default function OnePage() {
       });
 
       // Step 3 -- get the image
-      const item_image = fetchData(process.env.NEXT_PUBLIC_IMAGE_API_URL, { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
+      const item_image = fetchData('/api/openaiimage', { method: 'POST', body: JSON.stringify({ item_name })}).then((response, error) => {
 
         // Catching any API errors
         if (error) {

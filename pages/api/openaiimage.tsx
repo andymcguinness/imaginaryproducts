@@ -23,8 +23,6 @@ const handler = async (req: NextRequest) => {
       size: '1024x1024',
     });
 
-    console.log(image_generated.data[0])
-
     // Yay! They responded! Let's tell the frontend!
     return new Response(JSON.stringify(image_generated.data[0]), {
       status: 200,

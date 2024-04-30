@@ -28,7 +28,10 @@ const handler = async (req: NextRequest) => {
     });
 
     // Yay! What an, erm, beautiful picture! Let's send it to the frontend
-    return new Response(JSON.stringify(image_generated.choices[0].message.content.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
+    const regex = /\n+/;
+
+    return new Response(JSON.stringify(image_generated.choices[0].message.content.trim().replace(regex, ' ').replace("\
+    ", "").replace("\\\"", "")), {
       status: 200,
       headers: {
         "content-type": "application/json",

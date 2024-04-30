@@ -7,9 +7,6 @@ import Image from 'next/image';
 // Framer-motion
 import { motion } from "framer-motion";
 
-// Blur Image component
-import BlurImage from '../components/blurimage'
-
 export default function Results({goHome, name, description, image}) {
   // Props:
   //  - goHome: the function from the main index.js file that controls the "Try Again" buttons' behavior
@@ -32,13 +29,13 @@ export default function Results({goHome, name, description, image}) {
             // The product image -- left side on big screens, top on small screens
           }
           <div className="w-full h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-            <BlurImage
+            <Image
+              unoptimized={true}
               src={image}
               className="w-full h-full flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
               width="1024"
               height="1024"
               alt={name}
-              unoptimized={true}
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkmAkAAJ8AmzsOXcYAAAAASUVORK5CYII="
             />

@@ -1,16 +1,13 @@
 // Next.js
 import type { NextRequest } from "next/server"
 
-// OpenAI package, but the edge version
-import { Configuration, OpenAIApi, ResponseTypes } from "openai-edge"
+// OpenAI package
+import OpenAI from 'openai';
 
 // Set the API key
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
-// Init the main module
-const openai = new OpenAIApi(configuration)
+const openai = new OpenAI({
+  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
+});
 
 const handler = async (req: NextRequest) => {
 
@@ -24,17 +21,14 @@ const handler = async (req: NextRequest) => {
     };
 
     // Ask the AI really, really nicely to paint me a picture
-    const image_generated = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: "Come up with a sales pitch for " + body.item_name + ".",
+    const image_generated = await openai.chat.completions.create({
+      messages: [{ role: 'user', content: "Come up with a sales pitch for " + body.item_name + "." }],
+      model: 'gpt-3.5-turbo',
       max_tokens: 500,
     });
 
-    // Wait for the response before doing anything
-    const data = (await image_generated.json()) as ResponseTypes["createCompletion"]
-
     // Yay! What an, erm, beautiful picture! Let's send it to the frontend
-    return new Response(JSON.stringify(data.choices[0].text.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
+    return new Response(JSON.stringify(image_generated.choices[0].message.content.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
       status: 200,
       headers: {
         "content-type": "application/json",

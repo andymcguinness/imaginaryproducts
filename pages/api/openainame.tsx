@@ -1,34 +1,26 @@
 // Next.js
 import type { NextRequest } from "next/server"
 
-// OpenAI package, but the edge version
-import { Configuration, OpenAIApi, ResponseTypes } from "openai-edge"
+// OpenAI package
+import OpenAI from 'openai';
 
 // Set the API key
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
-// Init the main component
-const openai = new OpenAIApi(configuration)
+const openai = new OpenAI({
+  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
+});
 
 const handler = async (req: NextRequest) => {
 
   try {
 
     // Try getting a name
-    const item_name = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: "Generate the name of an absurd imaginary product.",
-      max_tokens: 50,
-      stream: false,
+    const item_name = await openai.chat.completions.create({
+      messages: [{ role: 'user', content: 'Generate the name of an absurd imaginary product.' }],
+      model: 'gpt-3.5-turbo',
     });
 
-    // Await the response, so we can do something with it
-    const data = (await item_name.json()) as ResponseTypes["createCompletion"]
-
     // Yay! We did it! Return that response!
-    return new Response(JSON.stringify(data.choices[0].text.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
+    return new Response(JSON.stringify(item_name.choices[0].message.content.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
       status: 200,
       headers: {
         "content-type": "application/json",

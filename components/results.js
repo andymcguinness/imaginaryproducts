@@ -38,6 +38,7 @@ export default function Results({goHome, name, description, image}) {
               width="1024"
               height="1024"
               alt={name}
+              unoptimized={true}
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkmAkAAJ8AmzsOXcYAAAAASUVORK5CYII="
             />

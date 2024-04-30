@@ -18,7 +18,8 @@
 # misc
 .DS_Store
 .env
-*.config.js
+postcss.config.js
+tailwind.config.js
 
 # debug
 npm-debug.log*

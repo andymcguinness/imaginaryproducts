@@ -173,7 +173,7 @@ export default function OnePage() {
           setPercentage(100);
 
           // No need to un-junk! Wow!
-          let new_image = json.data[0].url;
+          let new_image = json.url;
 
           // Set the URL
           setItemImage(new_image);

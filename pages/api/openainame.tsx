@@ -15,12 +15,12 @@ const handler = async (req: NextRequest) => {
 
     // Try getting a name
     const item_name = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: 'Generate the name of a nonexistent product.' }],
+      messages: [{ role: 'user', content: 'Generate the name of an unusual but functional imaginary product.' }],
       model: 'gpt-3.5-turbo',
     });
 
     // Yay! We did it! Return that response!
-    return new Response(JSON.stringify(item_name.choices[0].message.content.trim().replace("\n", "").replace("\"", "").replace("\\\"", "")), {
+    return new Response(JSON.stringify(item_name.choices[0].message.content.trim().replaceAll("\\n", " ").replaceAll("\\n\\n", " ").replaceAll("\"", "").replaceAll("\\\"", "")), {
       status: 200,
       headers: {
         "content-type": "application/json",

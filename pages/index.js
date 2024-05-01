@@ -131,7 +131,7 @@ export default function OnePage() {
           setPercentage(66);
 
           // Un-junk the text
-          let cleansed_description = String(text).replace("\n", "").replace("\"", "").trimEnd().substring(0, text.length - 2);
+          let cleansed_description = String(text).replaceAll("\\n", " ").replace("\"", "").trimEnd().substring(0, text.length - 2);
 
           // Set that description
           setItemDescription(cleansed_description);

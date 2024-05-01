@@ -15,7 +15,7 @@ const handler = async (req: NextRequest) => {
 
     // Try getting a name
     const item_name = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: 'Generate the name of an unusual but functional imaginary product.' }],
+      messages: [{ role: 'user', content: 'Generate the name of a wacky imaginary product.' }],
       model: 'gpt-3.5-turbo',
     });
 

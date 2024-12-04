@@ -22,7 +22,7 @@ const handler = async (req: NextRequest) => {
 
     // Ask the AI really, really nicely to paint me a picture
     const image_generated = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: "Come up with a sales pitch for " + body.item_name + "." }],
+      messages: [{ role: 'user', content: "Craft a fun and engaging sales pitch for a(n) " + body.item_name + " that combines practicality with whimsical fun. The product should seem realistic enough to exist in the real world but have a unique and quirky twist. In your pitch, emphasize its purpose, key features, how it works, and who it's perfect for. Highlight any unexpected benefits or humorous side effects. The tone should be energetic and upbeat, with a bit of humor, making it sound like something that could genuinely be marketed to a wide audience. Imagine you're selling it on a popular infomercial or a trendy online store!" }],
       model: 'gpt-3.5-turbo',
       max_tokens: 500,
     });
